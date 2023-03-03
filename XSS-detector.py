@@ -64,7 +64,7 @@ if os.path.isfile(args.target):
     search_for_xss_vulnerabilities(args.target)
 else:
     if not args.target.startswith('http://') and not args.target.startswith('https://'):
-        args.target = 'http://' + args.target
+        args.target = 'https://' + args.target
 
     content = get_url_content(args.target)
     if content:
