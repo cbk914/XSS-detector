@@ -35,7 +35,10 @@ Stored XSS: Stored XSS attacks involve injecting malicious script into a web app
 DOM-based XSS: DOM-based XSS attacks involve injecting malicious script into a web application that is then executed by a victim's browser as part of the application's Document Object Model (DOM) manipulation code.
 
 Here are some resources for further reading on XSS:
+    
 
 CAPEC (Common Attack Pattern Enumeration and Classification): https://capec.mitre.org/data/definitions/63.html
+    
 PortSwigger: https://portswigger.net/web-security/cross-site-scripting
+    
 CWE (Common Weakness Enumeration): https://cwe.mitre.org/data/definitions/79.html
