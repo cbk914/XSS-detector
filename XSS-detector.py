@@ -46,13 +46,20 @@ def search_for_xss_vulnerabilities(file_path):
                     print('\nDOM-based XSS vulnerabilities:')
                     for vulnerability in potential_dom_vulnerabilities:
                         print(vulnerability)
+            else:
+                print('No XSS vulnerabilities found in file: {}'.format(file_path))
 
 # Check if the target is a file or directory
 if os.path.isfile(args.target):
     search_for_xss_vulnerabilities(args.target)
 elif os.path.isdir(args.target):
+    vulnerabilities_found = False
     for dirpath, dirnames, filenames in os.walk(args.target):
         for filename in filenames:
             if filename.endswith('.html') or filename.endswith('.php'):
                 file_path = os.path.join(dirpath, filename)
                 search_for_xss_vulnerabilities(file_path)
+                vulnerabilities_found = True
+
+    if not vulnerabilities_found:
+        print('No XSS vulnerabilities found on {}'.format(args.target))
