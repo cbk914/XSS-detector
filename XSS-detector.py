@@ -3,6 +3,7 @@
 import argparse
 import os
 import re
+import requests
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-t', '--target', help='Target file or directory to scan for XSS vulnerabilities', required=True)
@@ -49,17 +50,31 @@ def search_for_xss_vulnerabilities(file_path):
             else:
                 print('No XSS vulnerabilities found in file: {}'.format(file_path))
 
+# Define a function to get the content of a URL
+def get_url_content(url):
+    try:
+        response = requests.get(url)
+        if response.status_code == 200:
+            return response.text
+    except requests.exceptions.RequestException:
+        pass
+
 # Check if the target is a file or directory
 if os.path.isfile(args.target):
     search_for_xss_vulnerabilities(args.target)
-elif os.path.isdir(args.target):
-    vulnerabilities_found = False
-    for dirpath, dirnames, filenames in os.walk(args.target):
-        for filename in filenames:
-            if filename.endswith('.html') or filename.endswith('.php'):
-                file_path = os.path.join(dirpath, filename)
-                search_for_xss_vulnerabilities(file_path)
-                vulnerabilities_found = True
+else:
+    if not args.target.startswith('http://') and not args.target.startswith('https://'):
+        args.target = 'http://' + args.target
 
-    if not vulnerabilities_found:
-        print('No XSS vulnerabilities found on {}'.format(args.target))
+    content = get_url_content(args.target)
+    if content:
+        vulnerabilities_found = False
+        with open('temp.html', 'w') as file:
+            file.write(content)
+        search_for_xss_vulnerabilities('temp.html')
+        os.remove('temp.html')
+        vulnerabilities_found = True
+        if not vulnerabilities_found:
+            print('No XSS vulnerabilities found on {}'.format(args.target))
+    else:
+        print('Could not fetch content from {}'.format(args.target))
