@@ -16,7 +16,7 @@ The script will search for potential XSS vulnerabilities in the target file or d
 
 The script supports both file and URL targets. If a URL is provided as the target, the script will fetch the content from the URL and save it to a temporary file before scanning for vulnerabilities.
 
-If the target URL does not start with 'http://' or 'https://', the script will add the 'http://' prefix by default.
+If the target URL does not start with 'http://' or 'https://', the script will add the 'https://' prefix by default.
 
 If the script finds potential XSS vulnerabilities, it will output the type of vulnerability (Reflected XSS, Stored XSS, or DOM-based XSS) along with the vulnerable code snippet.
 
